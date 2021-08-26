@@ -86,7 +86,7 @@ customer_dc_alignment_df <- get_solution(solution,customer_dc_align[customerinde
   dplyr::select(Customer_City,Customer_Lat,Customer_Lng,
                 DC_City,DC_Lat,DC_Lng)
 
-#verify only two DCs selected
+#verify only two DCs selected, should be Dallas and Houston
 dc_cities_selected <- unique(customer_dc_alignment_df$DC_City)
 
 #leaflet: color customer city by aligned DC.
