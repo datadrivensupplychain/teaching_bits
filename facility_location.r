@@ -44,11 +44,11 @@ dc_option_count <- nrow(tx_dc)
 
 #now make optimization model
 dc_location_model <- ompr::MIPModel() %>%
-  #integer decision variables: for each customer, which DC to align to?
+  #binary decision variables: for each customer, which DC to align to?  Yes/no decisions, align Customer A to DC B yes, or no?
   add_variable(customer_dc_align[customerindex,dcindex],
                customerindex=1:customer_count,
                dcindex=1:dc_option_count,type='binary') %>%
-  #integer decision variable: open a DC or no?
+  #binary decision variable: open a DC or no?
   add_variable(open_dc_binary[dcindex],dcindex=1:dc_option_count,type='binary') %>%
   #first constraint: each customer aligned to 1 and only 1 DC
   add_constraint(sum_expr(customer_dc_align[customerindex,dcindex],
