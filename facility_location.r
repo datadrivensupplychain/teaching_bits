@@ -9,6 +9,7 @@ library(ROI.plugin.glpk)
 
 require(geosphere)
 require(measurements)
+require(maps)
 
 # customer set are the largest cities in Texas
 
