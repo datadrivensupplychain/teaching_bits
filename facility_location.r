@@ -86,8 +86,12 @@ customer_dc_alignment_df <- get_solution(solution,customer_dc_align[customerinde
   dplyr::select(Customer_City,Customer_Lat,Customer_Lng,
                 DC_City,DC_Lat,DC_Lng)
 
+#verify each Customer City is only present once - meaning that it's only aligned to a single DC
+table(customer_dc_alignment_df$Customer_City)
+
 #verify only two DCs selected, should be Dallas and Houston
 dc_cities_selected <- unique(customer_dc_alignment_df$DC_City)
+dc_cities_selected
 
 #leaflet: color customer city by aligned DC.
 customer_dc_alignment_df %<>% dplyr::mutate(
@@ -100,4 +104,4 @@ leaflet(customer_dc_alignment_df) %>% addTiles() %>%
 
 #note that this optimization model is completely unconstrained in the number of customers
 #or volume that can be aligned to a given warehouse. Also you would generally
-#want to consider more than just 5 options for DC locations.
+#want to consider more than just 6 options for DC locations.
