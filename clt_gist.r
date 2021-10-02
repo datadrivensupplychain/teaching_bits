@@ -2,128 +2,82 @@
 #no tidyverse packages, base R
 rm(list=ls())
 
-##normal
+
 #exponential distribution, mean 5, rate 1/5 ----
-exponential_variates <- rexp(n=1000000,rate=1/5)
 
-#sample just 50 of the 1M variates, 5000 times
-sampled_exponential_variate_means <- numeric(length=5000)
+#sample just 50 variates, 60000 times
+sampled_exponential_variate_means <- numeric(length=60000)
 
-for(i in 1:5000){
-sampled_exponential_variates <- sample(x=exponential_variates,
-                                       size=50,
-                                       replace = FALSE)
-sampled_exponential_variate_means[i] <- mean(sampled_exponential_variates)
-}
+for(i in 1:60000){ sampled_exponential_variate_means[i] <- mean(rexp(n=50,rate=1/5)) }
 
-#compare the mean of the exponential variates, to the mean of the sampled means
-mean_exponential_variates <- mean(exponential_variates)
-mean_sampled_exponential_variate_means <- mean(sampled_exponential_variate_means)
+mean_sampled_exponential_means <- mean(sampled_exponential_variate_means)
 
-sd_exponential_variates <- sd(exponential_variates)
-sd_estimate_exponential_sampled_means <- sd(sampled_exponential_variate_means)*sqrt(50)
+stderror_exponential <- 5/sqrt(50)
+stdev_samplemeans_exponential <- sd(sampled_exponential_variate_means)
 
+#compare sampling mean, to population mean
+
+mean_sampled_exponential_means/5
+
+#compare standard error calculation, to standard deviation of the sample means
+stderror_exponential/stdev_samplemeans_exponential
 
 #histogram of the sampled means, verify it looks close to normally distributed
 hist(sampled_exponential_variate_means)
-#means ratio will be very close to 1
-mean_exponential_variates/mean_sampled_exponential_variate_means
-#sd ratio will be very close to 1
-sd_exponential_variates/sd_estimate_exponential_sampled_means
-
-##lognormal ----
-#lognormal distribution, meanlog 0, sdlog 1 
-lognormal_variates <- rlnorm(1000000, meanlog=0,sdlog=1)
-
-#sample just 50 of the 1M variates, 5000 times
-sampled_lognormal_variate_means <- numeric(length=5000)
-
-for(i in 1:5000){
-  sampled_lognormal_variates <- sample(x=lognormal_variates,
-                                         size=50,
-                                         replace = FALSE)
-  sampled_lognormal_variate_means[i] <- mean(sampled_lognormal_variates)
-}
-
-#compare the mean of the lognormal variates, to the mean of the sampled means
-mean_lognormal_variates <- mean(lognormal_variates)
-mean_sampled_lognormal_variate_means <- mean(sampled_lognormal_variate_means)
-
-sd_lognormal_variates <- sd(lognormal_variates)
-sd_estimate_lognormal_sampled_means <- sd(sampled_lognormal_variate_means)*sqrt(50)
-
-
-#histogram of the sampled means, verify it looks close to normally distributed
-hist(sampled_lognormal_variate_means)
-#means ratio will be very close to 1
-mean_lognormal_variates/mean_sampled_lognormal_variate_means
-#sd ratio will be very close to 1
-sd_lognormal_variates/sd_estimate_lognormal_sampled_means
 
 
 
 
-#unimodal normal distribution: mean 30 SD 5 ----
-normal_variates <- rnorm(n=1000000,mean=30,sd=5)
+#normal distribution: mean 30 SD 5 ----
 
+#sample just 50 variates, 60000 times
+sampled_normal_variate_means <- numeric(length=60000)
+for(i in 1:60000){  sampled_normal_variate_means[i] <- mean(rnorm(n=50,mean=30,sd=5))}
 
-#sample just 50 of the 1M variates, 5000 times
-sampled_normal_variate_means <- numeric(length=5000)
+mean_sampled_normal_means <- mean(sampled_normal_variate_means)
 
-for(i in 1:5000){
-  sampled_normal_variates <- sample(x=normal_variates,
-                                       size=50,
-                                       replace = FALSE)
-  sampled_normal_variate_means[i] <- mean(sampled_normal_variates)
-}
+stderror_normal <- 5/sqrt(50)
+stdev_samplemeans_normal <- sd(sampled_normal_variate_means)
 
-#compare the mean of the normal variates, to the mean of the sampled means
-mean_normal_variates <- mean(normal_variates)
-mean_sampled_normal_variate_means <- mean(sampled_normal_variate_means)
+#compare sampling mean, to population mean
 
-sd_normal_variates <- sd(normal_variates)
-sd_estimate_normal_sampled_means <- sd(sampled_normal_variate_means)*sqrt(50)
+mean_sampled_normal_means/30
 
+#compare standard error calculation, to standard deviation of the sample means
+stderror_normal/stdev_samplemeans_normal
 
 #histogram of the sampled means, verify it looks close to normally distributed
 hist(sampled_normal_variate_means)
-#means ratio will be very close to 1
-mean_normal_variates/mean_sampled_normal_variate_means
-#sd ratio will be very close to 1
-sd_normal_variates/sd_estimate_normal_sampled_means
 
 
 
 
-#bimodal normal distribution ----
+#normal distribution in heights----
+#adult men  height mean 70 inches , sd 3inches
+#adult women height mean 64.5 inches , sd 2.5 inches
+#assuming 50% men/50% women: mean 67.25, sd 3.9
 
-bimodal_normal_variates <- c(rnorm(n=500000,mean=30,sd=5),rnorm(n=500000,mean=-20,sd=4))
+sampled_normal_variate_means_heights <- numeric(length=60000)
+for(i in 1:60000){  sampled_normal_variate_means_heights[i] <- mean(rnorm(n=50,mean=67.25,sd=3.9))}
 
+mean_sampled_normal_means_height <- mean(sampled_normal_variate_means_heights)
 
-#sample just 50 of the 1M variates, 5000 times
-sampled_bimodal_normal_variate_means <- numeric(length=5000)
+stderror_normal_height <- 3.9/sqrt(50)
+stdev_samplemeans_normal_height <- sd(sampled_normal_variate_means_heights)
 
-for(i in 1:5000){
-  sampled_bimodal_normal_variates <- sample(x=bimodal_normal_variates,
-                                    size=50,
-                                    replace = FALSE)
-  sampled_bimodal_normal_variate_means[i] <- mean(sampled_bimodal_normal_variates)
-}
+#compare sampling mean, to population mean
 
-#compare the mean of the normal variates, to the mean of the sampled means
-mean_bimodal_normal_variates <- mean(bimodal_normal_variates)
-mean_sampled_bimodal_normal_variate_means <- mean(sampled_bimodal_normal_variate_means)
+mean_sampled_normal_means_height/67.25
 
-sd_bimodal_normal_variates <- sd(bimodal_normal_variates)
-sd_bimodal_estimate_normal_sampled_means <- sd(sampled_bimodal_normal_variate_means)*sqrt(50)
-
-
+#compare standard error calculation, to standard deviation of the sample means
+stderror_normal_height/stdev_samplemeans_normal_height
 
 #histogram of the sampled means, verify it looks close to normally distributed
-hist(sampled_bimodal_normal_variate_means)
-#ratio will be very close to 1
-mean_bimodal_normal_variates/mean_sampled_bimodal_normal_variate_means
-#sd ratio will be very close to 1
-sd_bimodal_normal_variates/sd_bimodal_estimate_normal_sampled_means
+hist(sampled_normal_variate_means_heights)
 
 
+
+#95% CI example for heights. mean 67.25 SD 3.9.  se <- 3.9/sqrt(50)
+ci_95_heights <- cbind.data.frame(sample_mean = sampled_normal_variate_means_heights,stringsAsFactors=FALSE) %>%
+  dplyr::mutate(CI_95_Low = sample_mean-1.96*stderror_normal_height, CI_95_High = sample_mean+1.96*stderror_normal_height) %>%
+  dplyr::mutate(population_mean_in_interval = dplyr::if_else(CI_95_Low<=67.25 & CI_95_High>=67.25, "Yes",'No'))
