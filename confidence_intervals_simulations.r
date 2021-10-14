@@ -62,7 +62,7 @@ sample_size = 400
 
 p_hat <- numeric()
 
-for(i in 1:500000){
+for(i in 1:200000){
   k <- rbinom(n=sample_size, size = 1, prob = p)
   p_hat[i] <- mean(k)
   
