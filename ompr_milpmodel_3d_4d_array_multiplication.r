@@ -52,7 +52,7 @@ rm(list=ls())
 set.seed(42)
 array1 <- array(dim=c(5,10,7,4),data=runif(5*10*7*4))
 
-#define this function for 3d array multiplication using MILPModel
+#define this function for 4d array multiplication using MILPModel
 array_4d_multiplication_fcn <- function(static_array, row_variable, column_variable,dim3_variable,dim4_variable){
   vapply(seq_along(static_array), function(k) static_array[
   row_variable[k], column_variable[k], dim3_variable[k],dim4_variable[k]], numeric(1L))  }
