@@ -47,5 +47,5 @@ for(i in 1:nrow(crossjoin_states)){
 
 markov_transmat <- new("markovchain",states=currentstate_vector, transitionMatrix=transmatrix )
 
-markovchain::is.accessible(object= markov_transmat,from="rgb_15_7_8",to="rgb_30_0_0")
+markovchain::is.accessible(object= markov_transmat,from="rgb_15_8_7",to="rgb_30_0_0")
 #[1] FALSE
