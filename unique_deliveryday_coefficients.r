@@ -31,7 +31,7 @@ for(j in 1:ncol(k)){
   total <- sum(as.numeric(df) * coefficient_vector)
   daycount <- sum(as.numeric(df))
   df$DayCount <- daycount
-  df$Coefficient <- total
+  df$Schedule_Scalar <- total
   
   p <- length(delivery_list)
   delivery_list[[p+1]] <- df
@@ -66,7 +66,7 @@ for(i in 1:nrow(delivery_df)){
   }
   
 #should be same as number of rows in delivery_df
-length(unique(delivery_df$Coefficient))
+length(unique(delivery_df$Schedule_Scalar))
   
 #now identify if a given delivery schedule has sufficient spacing:
 # 1x weekly: all allowed
@@ -108,10 +108,10 @@ testmodel <- ompr::MILPModel() %>%
   #constraint: sumproduct of day binaries * coefficient_vector, equals select_schedule * coefficients
   
   add_constraint( 
-    #LHS : schedule binaries
-    (sum_expr(select_schedule[scheduleindex] * ompr::colwise(delivery_df$Coefficient[scheduleindex]),scheduleindex=1:schedule_count)) == 
-    #RHS: day binaries *    coefficient_vector
-  (sum_expr(delivery_day[dayindex] * ompr::colwise(coefficient_vector[dayindex]), dayindex=1:7)))  %>%
+    #LHS: day binaries * coefficient_vector
+    (sum_expr(delivery_day[dayindex] * ompr::colwise(coefficient_vector[dayindex]), dayindex=1:7)) ==
+    #RHS: acceptable schedule binaries * schedule scalars
+      (sum_expr(select_schedule[scheduleindex] * ompr::colwise(delivery_df$Schedule_Scalar[scheduleindex]),scheduleindex=1:schedule_count)) ) %>%
   
   #objective function: maximize obj_runif
   set_objective(sum_expr(select_schedule[scheduleindex] * ompr::colwise(obj_runif[scheduleindex]),scheduleindex=1:schedule_count),
@@ -129,7 +129,7 @@ scheduleindex_solution <- ompr::get_solution(solution, select_schedule[schedulei
 
 #check for consistency betwen solutions
 k <- sum(dayindex_solution$value*coefficient_vector)
-m <- sum(scheduleindex_solution$value * delivery_df$Coefficient)
+m <- sum(scheduleindex_solution$value * delivery_df$Schedule_Scalar)
 
 if(k != m){stop("mismatch of coefficient values")}
 #pairwise comparison, mean should be 1 indicating all TRUE
