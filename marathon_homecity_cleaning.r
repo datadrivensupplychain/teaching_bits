@@ -7,7 +7,7 @@ rm(list=ls())
 gc(T,T,T)
 
 
-marathon_data <- readr::read_csv("DDSC/Rscripts/parsed_marathon_data_2.csv")
+marathon_data <- readr::read_csv("parsed_marathon_data_2.csv")
 country_names_uppercase1 <- maps::world.cities$country.etc %>% unique() %>% stringr::str_to_upper()
 country_names_uppercase2 <- countrycode::codelist$country.name.en %>% unique() %>% stringr::str_to_upper()
 country_abbrv_uppercase1 <- countrycode::codelist$ioc %>% unique() %>% stringr::str_to_upper()
