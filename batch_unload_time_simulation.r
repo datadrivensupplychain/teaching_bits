@@ -1,4 +1,4 @@
-#Discrete Event Simulation Example: Inbound, PIPO Storage, Outbound
+#Discrete Event Simulation Example: batch timeout dependent upon batch size
 library(tidyverse)
 library(magrittr)
 library(simmer)
@@ -20,7 +20,7 @@ inbound_truck_df <- data.frame(
   Name = seq(1,truck_count,1),
   stringsAsFactors=FALSE) %>%
   dplyr::group_by(rownum = dplyr::row_number()) %>%
-#trucks arrive at time 0 for the first truck, 30 for the second truck, 60 for thrid truck
+#trucks arrive at time 30 for the first truck, 60 for the second truck, 90 for third truck
   dplyr::mutate(Inbound_Time = 30*Name) %>%
   #pallet count sampled from [21,22,23,24,25] with equal probability
   dplyr::mutate(Pallet_Count = sample(x=c(21,22,23,24,25),size=1))
@@ -36,12 +36,14 @@ for(i in 1:nrow(inbound_truck_df)){
 ib_time_vec <- sort(ib_time_vec)
 
 
-pallet_df <- cbind.data.frame(Inbound_Arrival_Time = ib_time_vec,  stringsAsFactors=FALSE) %>%
+pallet_df <- cbind.data.frame(
+  PalletName = paste0("Pallet",seq(0,length(ib_time_vec)-1,1)),
+  Inbound_Arrival_Time = ib_time_vec,  stringsAsFactors=FALSE) %>%
   #identify Batch Size and dock seizure for both inbound and outbound
   dplyr::group_by(Inbound_Arrival_Time) %>%
   
-  dplyr::mutate(    Inbound_Batch_Size = dplyr::n(),
-                    Unload_Time = runif(1,0.9,1.1)*Inbound_Batch_Size )
+  dplyr::mutate(    Inbound_Batch_Size = dplyr::n()) %>%
+  dplyr::mutate(  Unload_Time = runif(1,0.99,1.01)*Inbound_Batch_Size )
 
 #create simulation ----
 
