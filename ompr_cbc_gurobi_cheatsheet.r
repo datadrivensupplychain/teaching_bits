@@ -58,11 +58,16 @@ library(tidyverse)
 library(ompr)
 library(ompr.roi)
 #library(ROI.plugin.cbc)
-
 result <- MIPModel() |>
   add_variable(x, type = "integer") |>
   add_variable(y, type = "continuous", lb = 0) |>
   set_bounds(x, lb = 0) |>
   set_objective(x + y, "max") |>
   add_constraint(x + y <= 11.25) |>
-  solve_model(with_ROI(solver = "gurobi"))
+  solve_model(with_ROI(solver = "gurobi", OutputFlag =1, TimeLimit = 100, MIPGap = 0.05))
+
+#https://rdrr.io/github/roigrp/ROI.plugin.gurobi/src/R/solver_controls.R
+#OutputFlag=0 turns off verbosity, OutputFlag=1 turns on verbosity
+#TimeLimit =  Presumably in seconds??
+#MIPGap =  percentage (relative gap)
+
