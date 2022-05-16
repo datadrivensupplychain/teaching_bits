@@ -12,7 +12,7 @@ library(gurobi)
 #>  Sys.getenv("LD_LIBRARY_PATH")
 #[1] "C:\\gurobi951\\win64\\lib"
 
-
+#install ROI.plugin.gurobi:
 #remotes:::install_github("roigrp/ROI.plugin.gurobi", INSTALL_opts="--no-multiarch")
 
 #if this error occurs,
@@ -25,7 +25,6 @@ library(ROI.plugin.gurobi)
 library(tidyverse)
 library(ompr)
 library(ompr.roi)
-#library(ROI.plugin.cbc)
 
 result <- MIPModel() |>
   add_variable(x, type = "integer") |>
@@ -37,5 +36,5 @@ result <- MIPModel() |>
 
 #https://rdrr.io/github/roigrp/ROI.plugin.gurobi/src/R/solver_controls.R
 #OutputFlag=0 turns off verbosity, OutputFlag=1 turns on verbosity
-#TimeLimit =  Presumably in seconds??
+#TimeLimit : in seconds
 #MIPGap =  percentage (relative gap)
